@@ -3,7 +3,7 @@
 Plugin Name: Events Manager Importer
 Plugin URI: http://soixantecircuits.fr/
 Description: Import your .xlsx or CSV into Events Manager the way you want it.
-Version: 1.0
+Version: 1.0.1
 Author: Soixante Circuits
 Author URI: http://soixantecircuits.fr/
 License: GPL
@@ -43,7 +43,7 @@ function emiInstall(){
 	ob_clean();
 }
 
-function upload_create() {   
+function upload_create() {
     $upload = wp_upload_dir();
     $upload_dir = $upload['basedir'];
     $upload_dir = $upload_dir . '/emi_tmp';
