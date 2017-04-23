@@ -7,7 +7,9 @@
 	}
 
 	private function xlsxtimeToDate($xlsxtime) {
-		return date_i18n('d/m/Y H:i:s', ($xlsxtime - 25569) * 86400);
+		$tz = new DateTimeZone(get_option( 'timezone_string' ));
+		$timeOffset = $tz->getOffset(new DateTime);
+		return date_i18n('d/m/Y H:i:s', (($xlsxtime - 25569) * 86400) - $timeOffset);
 	}
 
 	private function getDefault() {
@@ -46,6 +48,7 @@
 				$address['lat'] : '...';
 			$locationDetail['lng'] = (($address['lng'] != 'false') && ($address['lng'] != '')) ?
 				$address['lng'] : '...';
+			print_r($locationDetail);
 			return $locationDetail;
 		} else {
 			return $this->getDefault();
