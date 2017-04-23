@@ -12,6 +12,7 @@
 
 	private function getDefault() {
 		$locationDetail = array();
+
 		$locationDetail['state_name'] = '...';
 		$locationDetail['country'] = '';
 		$locationDetail['lat'] = '...';
@@ -35,15 +36,15 @@
 			$address['lat'] = (String) $geometry->location->lat;
 			$address['lng'] = (String) $geometry->location->lng;
 
-			$locationDetail['city'] = (($address['locality']['long_name'] != 'false') && ($address['locality']['long_name'] != '')) ? 
+			$locationDetail['city'] = (($address['locality']['long_name'] != 'false') && ($address['locality']['long_name'] != '')) ?
 				$address['locality']['long_name'] : '...';
-			$locationDetail['state_name'] = (($address['administrative_area_level_1']['long_name'] != 'false') && ($address['administrative_area_level_1']['long_name'] != '')) ? 
+			$locationDetail['state_name'] = (($address['administrative_area_level_1']['long_name'] != 'false') && ($address['administrative_area_level_1']['long_name'] != '')) ?
 				$address['administrative_area_level_1']['long_name'] : '...';
-			$locationDetail['country'] = (($address['country']['short_name'] != 'false') && ($address['country']['short_name'] != '')) ? 
+			$locationDetail['country'] = (($address['country']['short_name'] != 'false') && ($address['country']['short_name'] != '')) ?
 				$address['country']['short_name'] : '...';
-			$locationDetail['lat'] = (($address['lat'] != 'false') && ($address['lat'] != '')) ? 
+			$locationDetail['lat'] = (($address['lat'] != 'false') && ($address['lat'] != '')) ?
 				$address['lat'] : '...';
-			$locationDetail['lng'] = (($address['lng'] != 'false') && ($address['lng'] != '')) ? 
+			$locationDetail['lng'] = (($address['lng'] != 'false') && ($address['lng'] != '')) ?
 				$address['lng'] : '...';
 			return $locationDetail;
 		} else {
@@ -58,18 +59,18 @@
 		$id = 0;
 		foreach($xlsx->rows() as $k=> $r) {
 			if ($id == 0) { $id++; continue; }
-			$locationDetail = ($geocoding ? $this->getGeocoding($r[1]) : $this->getDefault());
+			$locationDetail = ($geocoding ? $this->getGeocoding($r[1]) : []]);
 			$exploded = explode("-", $r[1]);
 			array_push($em_locations, array(
 				'location_id' => $id,
-				'location_name' => isset($exploded[1]) ? $exploded[1] : null,
-				'location_address' => '...',
-				'location_town' => isset($locationDetail['city']) ? $locationDetail['city'] : (isset($exploded[1]) ? $exploded[1] : '...') ,
-				'location_postcode' => isset($exploded[0]) ? $exploded[0] : '...',
-				'location_region' => $locationDetail['state_name'],
-				'location_country' => $locationDetail['country'],
-				'location_latitude' => $locationDetail['lat'],
-				'location_longitude' => $locationDetail['lng'],
+				'location_name' => isset($exploded[0]) ? $exploded[0] : null,
+				'location_address' => isset($exploded[1]) ? $exploded[1] : '...',
+				'location_town' => isset($locationDetail['city']) ? $locationDetail['city'] : (isset($exploded[2]) ? $exploded[2] : '...') ,
+				'location_postcode' => isset($exploded[3]) ? $exploded[3] : '...',
+				'location_region' => isset($locationDetail['state_name'] ? $locationDetail['state_name'] : '...',
+				'location_country' => isset($locationDetail['country'] ? $locationDetail['country'] : '...',
+				'location_latitude' => isset($locationDetail['lat'] ? $locationDetail['lat'] : '...',
+				'location_longitude' => isset($locationDetail['lng'] ? $locationDetail['lng'] : '...',
 				'post_content' => null,
 
 			));
@@ -87,17 +88,18 @@
 			if ($id == 0) {
 				$id++;
 			} else {
-				$timeExploded = explode(' ', $this->xlsxtimeToDate($r[2]));
+				$startTimeExploded = explode(' ', $this->xlsxtimeToDate($r[2]));
+				$endTimeExploded = explode(' ', $this->xlsxtimeToDate($r[3]));
 				array_push($em_events, array(
 					'event_id' => $id,
 					'event_owner' => 1,
 					'event_name' => isset($r[0]) ? $r[0] : '...',
-					'event_start_time' => isset($timeExploded[1]) ? $timeExploded[1] : '08:00:00',
-					'event_end_time' => isset($timeExploded[1]) ? $timeExploded[1] : '18:00:00',
-					'event_all_day' => 1,
-					'event_start_date' => isset($timeExploded[0]) ? $timeExploded[0] : '01/01/1970',
-					'event_end_date' => isset($timeExploded[0]) ? $timeExploded[0] : '01/01/1970',
-					'post_content' => '...',
+					'event_start_time' => isset($startTimeExploded[1]) ? $startTimeExploded[1] : '08:00:00',
+					'event_end_time' => isset($endTimeExploded[1]) ? $endTimeExploded[1] : '18:00:00',
+					'event_all_day' => isset($endTimeExploded[0]) ? 0 : 1,
+					'event_start_date' => isset($startTimeExploded[0]) ? $startTimeExploded[0] : '01/01/1970',
+					'event_end_date' => isset($endTimeExploded[0]) ? $endTimeExploded[0] : $startTimeExploded[0],
+					'post_content' => isset($r[4]) ? $r[4] : '...',
 					'event_rsvp' => 0,
 					'event_rsvp_date' => null,
 					'event_rsvp_time' => "00:00:00",
