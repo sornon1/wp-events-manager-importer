@@ -38,12 +38,16 @@
 			$address['lat'] = (String) $geometry->location->lat;
 			$address['lng'] = (String) $geometry->location->lng;
 
-			$locationDetail['city'] = (($address['locality']['long_name'] != 'false') && ($address['locality']['long_name'] != '')) ?
-				$address['locality']['long_name'] : '...';
+			$locationDetail['address'] = (($address['route']['long_name'] != 'false') && ($address['route']['long_name'] != '')) ?
+				$address['route']['long_name'] : '...';
+			$locationDetail['city'] = (($address['postal_town']['long_name'] != 'false') && ($address['postal_town']['long_name'] != '')) ?
+				$address['postal_town']['long_name'] : '...';
 			$locationDetail['state_name'] = (($address['administrative_area_level_1']['long_name'] != 'false') && ($address['administrative_area_level_1']['long_name'] != '')) ?
 				$address['administrative_area_level_1']['long_name'] : '...';
 			$locationDetail['country'] = (($address['country']['short_name'] != 'false') && ($address['country']['short_name'] != '')) ?
 				$address['country']['short_name'] : '...';
+			$locationDetail['postcode'] = (($address['postal_code']['short_name'] != 'false') && ($address['postal_code']['short_name'] != '')) ?
+				$address['postal_code']['short_name'] : '...';
 			$locationDetail['lat'] = (($address['lat'] != 'false') && ($address['lat'] != '')) ?
 				$address['lat'] : '...';
 			$locationDetail['lng'] = (($address['lng'] != 'false') && ($address['lng'] != '')) ?
@@ -67,9 +71,9 @@
 			array_push($em_locations, array(
 				'location_id' => $id,
 				'location_name' => isset($exploded[0]) ? $exploded[0] : null,
-				'location_address' => isset($exploded[1]) ? $exploded[1] : '...',
+				'location_address' => isset($locationDetail['address']) ? $locationDetail['address'] : (isset($exploded[1]) ? $exploded[1] : '...'),
 				'location_town' => isset($locationDetail['city']) ? $locationDetail['city'] : (isset($exploded[2]) ? $exploded[2] : '...') ,
-				'location_postcode' => isset($exploded[3]) ? $exploded[3] : '...',
+				'location_postcode' => isset($locationDetail['postcode']) ? $locationDetail['postcode'] : (isset($exploded[3]) ? $exploded[3] : '...'),
 				'location_region' => isset($locationDetail['state_name']) ? $locationDetail['state_name'] : '...',
 				'location_country' => isset($locationDetail['country']) ? $locationDetail['country'] : '...',
 				'location_latitude' => isset($locationDetail['lat']) ? $locationDetail['lat'] : '...',
