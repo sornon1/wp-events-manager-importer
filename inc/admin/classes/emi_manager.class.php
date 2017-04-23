@@ -59,7 +59,7 @@
 		$id = 0;
 		foreach($xlsx->rows() as $k=> $r) {
 			if ($id == 0) { $id++; continue; }
-			$locationDetail = ($geocoding ? $this->getGeocoding($r[1]) : []]);
+			$locationDetail = ($geocoding ? $this->getGeocoding($r[1]) : array());
 			$exploded = explode("-", $r[1]);
 			array_push($em_locations, array(
 				'location_id' => $id,
@@ -67,10 +67,10 @@
 				'location_address' => isset($exploded[1]) ? $exploded[1] : '...',
 				'location_town' => isset($locationDetail['city']) ? $locationDetail['city'] : (isset($exploded[2]) ? $exploded[2] : '...') ,
 				'location_postcode' => isset($exploded[3]) ? $exploded[3] : '...',
-				'location_region' => isset($locationDetail['state_name'] ? $locationDetail['state_name'] : '...',
-				'location_country' => isset($locationDetail['country'] ? $locationDetail['country'] : '...',
-				'location_latitude' => isset($locationDetail['lat'] ? $locationDetail['lat'] : '...',
-				'location_longitude' => isset($locationDetail['lng'] ? $locationDetail['lng'] : '...',
+				'location_region' => isset($locationDetail['state_name']) ? $locationDetail['state_name'] : '...',
+				'location_country' => isset($locationDetail['country']) ? $locationDetail['country'] : '...',
+				'location_latitude' => isset($locationDetail['lat']) ? $locationDetail['lat'] : '...',
+				'location_longitude' => isset($locationDetail['lng']) ? $locationDetail['lng'] : '...',
 				'post_content' => null,
 
 			));
