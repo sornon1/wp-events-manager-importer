@@ -52,7 +52,6 @@
 				$address['lat'] : '...';
 			$locationDetail['lng'] = (($address['lng'] != 'false') && ($address['lng'] != '')) ?
 				$address['lng'] : '...';
-			print_r($locationDetail);
 			return $locationDetail;
 		} else {
 			return $this->getDefault();

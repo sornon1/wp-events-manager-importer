@@ -1,6 +1,6 @@
 # WP-Event-Manager-Importer
 
-## Description 
+## Description
 
 Allow you to easily import a xlsx file into event-manager plugin.
 
@@ -8,7 +8,7 @@ Allow you to easily import a xlsx file into event-manager plugin.
 
 - Event-Manager
 
-## Usage 
+## Usage
 
 Select the import page under Events left admin top menu and follow the instructions.
 
@@ -17,7 +17,7 @@ Select the import page under Events left admin top menu and follow the instructi
 As for now we only support basic import :
 
 ```
-"Venue Name" (Libellé Segment) | "Venue Postal Code" (CP-Ville) | "Event MySQL-Formatted Start Date and Time" (Date) | "Event Description" (Description)
+"Event Name" | "Event Location" | "Start Time" | "End Time" | "Description"
 ```
 
 ## Format for CSV :
