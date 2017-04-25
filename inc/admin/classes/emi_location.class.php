@@ -74,7 +74,7 @@
 			if (empty($location_id)&&!empty($post_id)){
 	    		$where = array(
 	    			"post_id" => $post_id
-	    		);  
+	    		);
 	    		$where_format = array(
 	    			"%d"
 	    		);
@@ -82,13 +82,13 @@
 			if (!empty($location_id)&&empty($post_id)){
 				$where = array(
 	    			"post_id" => $location_id
-	    		);  
+	    		);
 	    		$where_format = array(
 	    			"%d"
 	    		);
 			}
 	    	$data_formats =$this->getWordpressFormat($data);
-			return $wpdb->update( 
+			return $wpdb->update(
 					$table
 					,$data
 					,$where
@@ -116,7 +116,7 @@
 			$location_array=$this->get_location_array($Post);
 			$location_array["location_id"]=$this->get_location_id($Post->ID);
 			foreach ($location_array as $key => $value) {
-				update_post_meta($this->Post->ID, "_".$key, $value);	
+				update_post_meta($this->Post->ID, "_".$key, $value);
 			}
 		}
 
@@ -134,13 +134,13 @@
 			}
 		}
 
-		function get_location_id($post_id){
+		function get_location_id($post_id=null){
 			global $wpdb;
 			if ($post_id){
 				$query=$wpdb->prepare('SELECT location_id FROM '.EM_LOCATIONS_TABLE.' WHERE post_id = %d',$post_id);
 				$post_id=$wpdb->get_var($query);
 				$this->location_id=$post_id;
-				return $this->location_id;			
+				return $this->location_id;
 			}
 			else {
 				return $this->location_id;
@@ -196,7 +196,7 @@
 			case 3:
 				return __("Error while creating the location's table","emi");
 			break;
-			case 4 : 
+			case 4 :
 				return __("Error during insertion of locations in database","emi");
 			break;
 			default :

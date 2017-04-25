@@ -17,10 +17,9 @@
 
 		if (!empty($event_array["db_event_name"])){
 			if (!empty($Location)){
-				$location_id = $Location->get_location_id(false);
-			}
-			else {
-				$location_id=0;
+				$location_id = $Location->get_location_id();
+			} else {
+				$location_id=1;
 			}
 			$Event = new EMI_Event($event_array,$location_id);
 			$event_exist = $Event->exist();

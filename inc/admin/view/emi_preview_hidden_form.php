@@ -122,8 +122,10 @@
 		value="<?php echo $r['event_rsvp_time']; ?>"/>
 	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][event][db_event_spaces]" id="emi-event_spaces-<?php echo $r['event_id']; ?>"
 		value="<?php echo $r['event_spaces']; ?>"/>
-		<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][event][event_id]" id="emi-event_id-<?php echo $r['event_id']; ?>"
-			value="<?php echo $r['event_id']; ?>"/>
+	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][event][db_recurrence]" id="emi-recurrence-<?php echo $r['event_id']; ?>"
+		value="<?php echo $r['recurrence']; ?>"/>
+	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][event][db_event_id]" id="emi-event_id-<?php echo $r['event_id']; ?>"
+		value="<?php echo $r['event_id']; ?>"/>
 	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][location][db_location_id]" id="emi-location_id-<?php echo $r['event_id']; ?>"
 		value="<?php echo $location[$i]['location_id']; ?>">
 	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][location][post_status]" id="emi-location_status-<?php echo $r['event_id']; ?>"

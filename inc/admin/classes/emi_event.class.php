@@ -1,6 +1,7 @@
 <?php class EMI_Event extends EMI{
 		/* Field Names */
 	protected $event_id;
+	protected $db_event_id;
 	protected $db_event_slug;
 	protected $db_event_owner;
 	protected $db_event_name="";
@@ -20,11 +21,11 @@
 	protected $db_event_date_created;
 	protected $db_event_date_modified;
 	protected $db_blog_id=0;
-	protected $db_group_id=0;	
+	protected $db_group_id=0;
 	protected $start;
 	protected $end;
 	/**
-	 * Populated with the non-hidden event post custom fields (i.e. not starting with _) 
+	 * Populated with the non-hidden event post custom fields (i.e. not starting with _)
 	 * @protected array
 	 */
 	protected $event_attributes = array();
@@ -47,7 +48,7 @@
 	protected $post_status='publish';
 
 	function __construct($datas,$location_id) {
-		parent::__construct(); 
+		parent::__construct();
 		$this->db_event_name=__("Untitled","emi");
 		$this->hydrate($datas);
 		$this->format_date();
@@ -121,7 +122,7 @@
 	}
 
 	function get_event_array($Post){
-		
+
 		$event_array=array();
 		foreach(get_object_vars($this) as $key => $value){
 			$oldkey=$key;
@@ -155,7 +156,7 @@
 		$event_array=$this->get_event_array($Post);
 		$event_array["event_id"]=$this->get_event_id($Post->ID);
 		foreach ($event_array as $key => $value) {
-			update_post_meta($this->Post->ID, "_".$key, $value);	
+			update_post_meta($this->Post->ID, "_".$key, $value);
 		}
 		update_post_meta($Post->ID, '_start_ts', str_pad($this->start, 10, 0, STR_PAD_LEFT));
 		update_post_meta($Post->ID, '_end_ts', str_pad($this->end, 10, 0, STR_PAD_LEFT));
@@ -205,7 +206,7 @@
 		if (!empty($this->db_post_id)){
 			wp_delete_post($this->db_post_id);
 		}
-		
+
 	}
 
 	function get_error($code){
@@ -219,7 +220,7 @@
 			case 3:
 				return __("Error during event table import","emi");
 			break;
-			case 4 : 
+			case 4 :
 				return __("Error while saving to the database","emi");
 			break;
 			case 5 :
