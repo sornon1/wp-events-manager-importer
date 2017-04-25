@@ -72,7 +72,7 @@
 					$this->delete_event($event);
 					$this->save_event($event,"append",false);
 				}
-			break;		
+			break;
 			default :
 				foreach ($events_data as $event){
 					$this->save_event($event,$method,$show_errors);

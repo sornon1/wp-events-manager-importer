@@ -61,14 +61,19 @@
 	public function getLocationArray ($xlsx, $geocoding = false) {
 		$this->assocLocationId = array( '' => 0 );
 		$em_locations = array();
-
-		$id = 0;
+		global $wpdb;
+		$maxId = $wpdb->get_var( $wpdb->prepare(
+				'SELECT location_id FROM ' .EM_LOCATIONS_TABLE. ' WHERE %s IS NOT NULL ORDER BY location_id DESC LIMIT 0,1',
+				'location_id'
+			));
+		$id = $maxId;
 		foreach($xlsx->rows() as $k=> $r) {
-			if ($id == 0) { $id++; continue; }
+			if ($id == $maxId) { $id++; continue; }
 			$locationDetail = ($geocoding ? $this->getGeocoding($r[1]) : array());
 			$exploded = explode("-", $r[1]);
 			array_push($em_locations, array(
 				'location_id' => $id,
+				'location_status' => 'publish',
 				'location_name' => isset($exploded[0]) ? $exploded[0] : null,
 				'location_address' => isset($locationDetail['address']) ? $locationDetail['address'] : (isset($exploded[1]) ? $exploded[1] : '...'),
 				'location_town' => isset($locationDetail['city']) ? $locationDetail['city'] : (isset($exploded[2]) ? $exploded[2] : '...') ,
@@ -88,10 +93,14 @@
 
 	public function getEventArray ($xlsx) {
 		$em_events = array();
-
-		$id = 0;
+		global $wpdb;
+		$maxId = $wpdb->get_var( $wpdb->prepare(
+				'SELECT event_id FROM ' .EM_EVENTS_TABLE. ' WHERE %s IS NOT NULL ORDER BY event_id DESC LIMIT 0,1',
+				'event_id'
+			));
+		$id = $maxId;
 		foreach($xlsx->rows() as $k=> $r) {
-			if ($id == 0) {
+			if ($id == $maxId) {
 				$id++;
 			} else {
 				$startTimeExploded = explode(' ', $this->xlsxtimeToDate($r[2]));
@@ -99,6 +108,7 @@
 				array_push($em_events, array(
 					'event_id' => $id,
 					'event_owner' => 1,
+					'event_status' => 'publish',
 					'event_name' => isset($r[0]) ? $r[0] : '...',
 					'event_start_time' => isset($startTimeExploded[1]) ? $startTimeExploded[1] : '08:00:00',
 					'event_end_time' => isset($endTimeExploded[1]) ? $endTimeExploded[1] : '18:00:00',
@@ -106,6 +116,7 @@
 					'event_start_date' => isset($startTimeExploded[0]) ? $startTimeExploded[0] : '01/01/1970',
 					'event_end_date' => isset($endTimeExploded[0]) ? $endTimeExploded[0] : $startTimeExploded[0],
 					'post_content' => isset($r[4]) ? $r[4] : '...',
+					'post_status' => 'publish',
 					'event_rsvp' => 0,
 					'event_rsvp_date' => null,
 					'event_rsvp_time' => "00:00:00",

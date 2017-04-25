@@ -35,8 +35,8 @@
 <label>
 <span class="label-text"><?php _e("Import method", "emi"); ?> : </span>
 <select name="emi-method">
-	<option value="update" selected><?php _e("Update", "emi"); ?></option>
-	<option value="append"><?php _e("Append", "emi"); ?></option>
+	<option value="update"><?php _e("Update", "emi"); ?></option>
+	<option value="append" selected><?php _e("Append", "emi"); ?></option>
 	<option value="clean"><?php _e("Clean", "emi"); ?></option>
 	<option value="cleanupdate"><?php _e("Clean and Update", "emi"); ?></option>
 </select>
