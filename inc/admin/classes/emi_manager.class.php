@@ -108,7 +108,6 @@
 				array_push($em_events, array(
 					'event_id' => $id,
 					'event_owner' => 1,
-					'event_status' => 'publish',
 					'event_name' => isset($r[0]) ? $r[0] : '...',
 					'event_start_time' => isset($startTimeExploded[1]) ? $startTimeExploded[1] : '08:00:00',
 					'event_end_time' => isset($endTimeExploded[1]) ? $endTimeExploded[1] : '18:00:00',
