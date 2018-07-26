@@ -198,6 +198,10 @@
 			$evs['event_rsp_date']      = null;
 			$evs['event_spaces']        = null;
 			$evs['event_category_id']   = null;
+			$category_name = $v[18];
+			if ($params['null_string'] !== $category_name) {
+				$evs['event_category_id'] = get_cat_ID($category_name);
+			}
 			$evs['event_attributes']    = null;
 			$evs['recurrence']          = 0;
 			$evs['recurrence_interval'] = null;
