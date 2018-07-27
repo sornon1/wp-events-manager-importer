@@ -1,5 +1,47 @@
-<?php class EMI_Event extends EMI{
-		/* Field Names */
+<?php
+
+/**
+ * Get field key for field name.
+ * Will return first matched acf field key for a give field name.
+ * 
+ * ACF somehow requires a field key, where a sane developer would prefer a human readable field name.
+ * http://www.advancedcustomfields.com/resources/update_field/#field_key-vs%20field_name
+ * 
+ * This function will return the field_key of a certain field.
+ * 
+ * @param $field_name String ACF Field name
+ * @param $post_id int The post id to check.
+ * @return 
+ */
+function acf_get_field_key($field_name, $post_id) {
+	global $wpdb;
+	$acf_fields = $wpdb->get_results( $wpdb->prepare( "SELECT ID,post_parent,post_name FROM $wpdb->posts WHERE post_excerpt=%s AND post_type=%s" , $field_name , 'acf-field' ) );
+	// get all fields with that name.
+	switch ( count( $acf_fields ) ) {
+		case 0: // no such field
+			return false;
+		case 1: // just one result. 
+			return $acf_fields[0]->post_name;
+	}
+	// result is ambiguous
+	// get IDs of all field groups for this post
+	$field_groups_ids = array();
+	$field_groups = acf_get_field_groups( array(
+		'post_id' => $post_id,
+	) );
+	foreach ( $field_groups as $field_group )
+		$field_groups_ids[] = $field_group['ID'];
+	
+	// Check if field is part of one of the field groups
+	// Return the first one.
+	foreach ( $acf_fields as $acf_field ) {
+		if ( in_array($acf_field->post_parent,$field_groups_ids) )
+			return $acf_field->post_name;
+	}
+	return false;
+}
+class EMI_Event extends EMI{
+	/* Field Names */
 	protected $event_id;
 	protected $db_event_id;
 	protected $db_event_slug;
@@ -24,6 +66,9 @@
 	protected $db_group_id=0;
 	protected $start;
 	protected $end;
+	protected $db_post_category;
+	protected $meta_est;
+	protected $meta_rus;
 	/**
 	 * Populated with the non-hidden event post custom fields (i.e. not starting with _)
 	 * @protected array
@@ -90,26 +135,42 @@
 
 	function save(){
 		global $wpdb;
-	//create the post
+		//create the post
+		$slug = sanitize_title_with_dashes($this->db_event_name);
 		$post_array=array(
-			"post_type"=>EM_POST_TYPE_EVENT
-			,"post_title"=>$this->db_event_name
-			,"post_content"=>$this->db_post_content
-			,"post_status"=>$this->post_status
+			"post_type"=>EM_POST_TYPE_EVENT,
+			"post_title"=>$this->db_event_name,
+			"post_name"=>$slug,
+			"post_content"=>$this->db_post_content,
+			"post_status"=>$this->post_status
 		);
 		$this->Post = $this->createPost($post_array);
 		if (empty($this->Post)){return 2;}
+		$post_id = $this->Post->ID;
+		if ($this->db_post_category) {
+			$category = get_term_by('name', $this->db_post_category, 'event-categories');
+			if ($category !== false) {
+				wp_set_post_terms($post_id, [(int)$category->term_id], 'event-categories');
+			}
+		}
 		$this->db_event_slug=$this->Post->post_name;
-	//first we get an event array READY TO BE INSERTED
+		// first we get an event array READY TO BE INSERTED
 		$event_array=$this->get_event_array($this->Post);
 		if (empty($event_array)){return 3;}
-	//insert in em events table
+		// insert in em events table
 		$em_insert=$wpdb->insert(EM_EVENTS_TABLE, $event_array);
 		if (!(bool)$em_insert){return 4;}
-	//add posts metas
+		// add posts metas
 		$this->add_post_metas($this->Post);
-	//update his status of the post to publish
-		$publish_post=$wpdb->update( $wpdb->posts, array( 'post_status' => $this->Post->status, 'post_name' => $this->Post->post_name ), array( 'ID' => $this->Post->ID ) );
+		// add ACF metas
+		$ACFMetas = $this->add_ACF_metas($post_id);
+		if(!$ACFMetas) {
+			return 6;
+		}
+		// update status of the post to publish
+		$post_status = 'publish';
+		$unique_slug = wp_unique_post_slug($this->Post->post_name, $post_id, $post_status, 'event', 0);
+		$publish_post=$wpdb->update( $wpdb->posts, array( 'post_status' => $post_status, 'post_name' => $unique_slug), array( 'ID' => $this->Post->ID ) );
 		(bool)($publish_post);
 		if (!$publish_post){return 5;}
 		return 1;
@@ -135,6 +196,8 @@
 		$event_array["post_id"]=$Post->ID;
 		$event_array["event_status"]=$this->get_event_status($Post->status);
 		$event_array["event_attributes"]=json_encode($this->event_attributes);
+		unset($event_array["post_category"]);
+		unset($event_array["event_id"]);
 		return $event_array;
 	}
 
@@ -160,6 +223,40 @@
 		}
 		update_post_meta($Post->ID, '_start_ts', str_pad($this->start, 10, 0, STR_PAD_LEFT));
 		update_post_meta($Post->ID, '_end_ts', str_pad($this->end, 10, 0, STR_PAD_LEFT));
+	}
+
+	function add_ACF_metas($post_id) {
+		if (!class_exists('acf')) {
+			return false;
+		}
+
+		$est_keys = ['asukoht', 'sihtgrupp', 'korraldaja', 'korraldaja_email', 'urituse_info', 'osalemise_info', 'valine_link'];
+		$meta_est = [];
+		foreach ($this->meta_est as $index => $value) {
+			$key = $est_keys[$index];
+			$meta_est[$key] = $value;
+		}
+
+		foreach ($meta_est as $key => $value) {
+			update_field(acf_get_field_key($key, $post_id), $value, $post_id);
+		}
+
+		$rus_keys = ['venekeelne_info', 'title_ru', 'asukoht_ru', 'sihtgrupp_ru', 'korraldaja_ru', 'korraldaja_email', 'urituse_info_ru', 'osalemise_info_ru'];
+		$meta_rus = [];
+		foreach ($this->meta_rus as $index => $value) {
+			$key = $rus_keys[$index];
+			$meta_rus[$key] = $value;
+		}
+
+		$has_russian_meta = (bool)$meta_rus['venekeelne_info'];
+		if ($has_russian_meta) {
+			unset($meta_rus['venekeelne_info']);
+			update_field(acf_get_field_key('venekeelne_info', $post_id), $has_russian_meta, $post_id);
+			foreach ($meta_rus as $key => $value) {
+				update_field(acf_get_field_key($key, $post_id), $value, $post_id);
+			}
+		}
+		return true;
 	}
 
 	function get_event_id($post_id){
@@ -225,6 +322,9 @@
 			break;
 			case 5 :
 				return __("Error while updating article status","emi");
+			break;
+			case 6 :
+				return __("ACF plugin is not enabled - can't import custom fields","emi");
 			break;
 		endswitch;
 	}

@@ -7,72 +7,8 @@
 			</span>
 		</label>
 		<br class="clear" />
-		<label>
-			<span class="label-text"><?php _e("Location name", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_name]" id="emi-location_name-<?php echo $location[$i]['location_id']; ?>"
-					value="<?php echo $location[$i]['location_name']; ?>" default="<?php echo $location[$i]['location_name']; ?>">
-			</span>
-		</label>
-		<label>
-			<span class="label-text"><?php _e("Address", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_address]" id="emi-location_address-<?php echo $location[$i]['location_id']; ?>"
-					value="<?php echo $location[$i]['location_address']; ?>" default="<?php echo $location[$i]['location_address']; ?>">
-			</span>
-		</label>
-		<label>
-			<span class="label-text"><?php _e("Town", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_town]" id="emi-location_town-<?php echo $location[$i]['location_id']; ?>"
-					value="<?php echo $location[$i]['location_town']; ?>" default="<?php echo $location[$i]['location_town']; ?>">
-			</span>
-		</label>
-		<label>
-			<span class="label-text"><?php _e("State", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_state]" id="emi-location_state-<?php echo $location[$i]['location_id']; ?>"
-					sOpenvalue="<?php echo $location[$i]['location_state']; ?>" default="<?php echo $location[$i]['location_state']; ?>">
-			</span>
-		</label>
-		<label>
-			<span class="label-text"><?php _e("Postcode", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_postcode]" id="emi-location_postcode-<?php echo $location[$i]['location_id']; ?>"
-					value="<?php echo $location[$i]['location_postcode']; ?>" default="<?php echo $location[$i]['location_postcode']; ?>">
-			</span>
-		</label>
-		<label>
-			<span class="label-text"><?php _e("Region", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_region]" id="emi-location_region-<?php echo $location[$i]['location_id']; ?>"
-					value="<?php echo $location[$i]['location_region']; ?>" default="<?php echo $location[$i]['location_region']; ?>">
-			</span>
-		</label>
 	</fieldset>
 	<fieldset class="inline-edit-center">
-		<label>
-			<span class="label-text"><?php _e("Country", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_country]" id="emi-location_country-<?php echo $location[$i]['location_id']; ?>"
-					value="<?php echo $location[$i]['location_country']; ?>" default="<?php echo $location[$i]['location_country']; ?>">
-			</span>
-		</label>
-		<label>
-			<span class="label-text"><?php _e("Latitude", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_latitude]" id="emi-location_latitude-<?php echo $location[$i]['location_id']; ?>"
-					value="<?php echo $location[$i]['location_latitude']; ?>" default="<?php echo $location[$i]['location_latitude']; ?>">
-			</span>
-		</label>
-		<label>
-			<span class="label-text"><?php _e("Longitude", "emi"); ?> : </span>
-			<span class="input-text-wrap">
-				<input name="emi[<?php echo $r['event_id']; ?>][location][db_location_longitude]" id="emi-location_longitude-<?php echo $location[$i]['location_id']; ?>"
-					value="<?php echo $location[$i]['location_longitude']; ?>" default="<?php echo $location[$i]['location_longitude']; ?>">
-			</span>
-		</label>
-		<br class="clear" />
 		<label>
 			<span class="label-text"><?php _e("Start Date", "emi"); ?> : </span>
 			<span class="input-text-wrap">
@@ -109,7 +45,45 @@
 				<textarea name="emi[<?php echo $r['event_id']; ?>][event][db_post_content]" id="emi-post_content-<?php echo $r['event_id']; ?>"><?php echo $r['post_content']; ?></textarea>
 			</span>
 		</label>
+		<label>
+			<span class="label-text"><?php _e("Category", "emi"); ?> : </span>
+			<span class="input-text-wrap">
+				<input readonly name="emi[<?php echo $r['event_id']; ?>][event][db_post_category]" id="emi-event_category_id-<?php echo $r['event_id']; ?>" value="<?php echo $r['event_category_id']; ?>" />
+			</span>
+		</label>
 	</fieldset>
+
+	<div class="clear"></div>
+	<fieldset class="inline-edit-left">
+
+		<?php foreach ($r['meta_est'] as $key => $value): ?>
+
+			<label>
+				<span class="label-text"><?php _e($key, "emi"); ?> : </span>
+				<span class="input-text-wrap">
+					<input name="emi[<?php echo $r['event_id']; ?>][event][meta_est][<?php $key ?>]" id="emi-<?php $key ?>-<?php echo $r['event_id']; ?>" value="<?php echo $value; ?>" />
+				</span>
+			</label>
+			<div class="clear"></div>
+
+		<?php endforeach; ?>
+
+	</fieldset>
+	<fieldset class="inline-edit-center">
+
+		<?php foreach ($r['meta_rus'] as $key => $value): ?>
+
+			<label>
+				<span class="label-text"><?php _e($key, "emi"); ?> : </span>
+				<span class="input-text-wrap">
+					<input name="emi[<?php echo $r['event_id']; ?>][event][meta_rus][<?php $key ?>]" id="emi-<?php $key ?>-<?php echo $r['event_id']; ?>" value="<?php echo $value; ?>" />
+				</span>
+			</label>
+			<div class="clear"></div>
+
+		<?php endforeach; ?>
+	</fieldset>
+
 	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][event][post_status]" id="emi-event_all_day-<?php echo $r['event_id']; ?>"
 		value="<?php echo $r['post_status']; ?>"/>
 	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][event][db_event_all_day]" id="emi-event_all_day-<?php echo $r['event_id']; ?>"

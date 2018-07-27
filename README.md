@@ -24,7 +24,7 @@ As for now we only support basic import :
 Thanks to [meitar] (https://github.com/meitar)
 
 ```
-venue_id,"Venue Name","Venue Street Address","Venue Extended Address","Venue City","Venue State","Venue Postal Code","Venue Country Code","Venue Web Advdress","Venue Description",event_id,venue_id,"Event Name","Event Status","Event MySQL-Formatted Start Date and Time","Event MySQL-Formatted End Date and Time","Event Web Address","Event Description"
+event_id,"Event Name","Event Status","Event MySQL-Formatted Start Date and Time","Event MySQL-Formatted End Date and Time","Event Web Address","Event Description","Category","Address","Target","Organizer","Organizer e-mail","Event information","Participation information","Title RUS","Address RUS","Target RUS","Organizer RUS","Organizer e-mail RUS","Event information RUS","Participation information RUS"
 ```
 
 Example file:
