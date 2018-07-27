@@ -190,8 +190,20 @@
 			$evs['meta_est']['urituse_info'] = $v[12];
 			$evs['meta_est']['osalemise_info'] = $v[13];
 			$evs['meta_est']['valine_link'] = $v[5];
-			
-			
+
+
+			// ACF meta fields for event - RUSSIAN
+			$evs['meta_rus'] = [];
+			$rus_title = $v[14];
+			$evs['meta_rus']['venekeelne_info'] = strlen(trim($rus_title)) > 0;
+			$evs['meta_rus']['title_ru'] = $rus_title;
+			$evs['meta_rus']['asukoht_ru'] = $v[15];
+			$evs['meta_rus']['sihtgrupp_ru'] = $v[16];
+			$evs['meta_rus']['korraldaja_ru'] = $v[17];
+			$evs['meta_rus']['korraldaja_email'] = $v[18];
+			$evs['meta_rus']['urituse_info_ru'] = $v[19];
+			$evs['meta_rus']['osalemise_info_ru'] = $v[20];
+
 			$events[] = $evs;
 			$i_e++;
 		}
