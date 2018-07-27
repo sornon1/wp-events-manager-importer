@@ -7,31 +7,6 @@
 			</span>
 		</label>
 		<br class="clear" />
-		
-		<?php foreach ($r['meta_est'] as $key => $value): ?>
-
-			<label>
-				<span class="label-text"><?php _e($key, "emi"); ?> : </span>
-				<span class="input-text-wrap">
-					<input name="emi[<?php echo $r['event_id']; ?>][event][meta_est][<?php $key ?>]" id="emi-<?php $key ?>-<?php echo $r['event_id']; ?>" value="<?php echo $value; ?>" />
-				</span>
-			</label>
-			<div class="clear"></div>
-
-		<?php endforeach; ?>
-
-		<?php foreach ($r['meta_rus'] as $key => $value): ?>
-
-			<label>
-				<span class="label-text"><?php _e($key, "emi"); ?> : </span>
-				<span class="input-text-wrap">
-					<input name="emi[<?php echo $r['event_id']; ?>][event][meta_est][<?php $key ?>]" id="emi-<?php $key ?>-<?php echo $r['event_id']; ?>" value="<?php echo $value; ?>" />
-				</span>
-			</label>
-			<div class="clear"></div>
-
-		<?php endforeach; ?>
-
 	</fieldset>
 	<fieldset class="inline-edit-center">
 		<label>
@@ -76,6 +51,37 @@
 				<input readonly name="emi[<?php echo $r['event_id']; ?>][event][db_post_category]" id="emi-event_category_id-<?php echo $r['event_id']; ?>" value="<?php echo $r['event_category_id']; ?>" />
 			</span>
 		</label>
+	</fieldset>
+
+	<div class="clear"></div>
+	<fieldset class="inline-edit-left">
+
+		<?php foreach ($r['meta_est'] as $key => $value): ?>
+
+			<label>
+				<span class="label-text"><?php _e($key, "emi"); ?> : </span>
+				<span class="input-text-wrap">
+					<input name="emi[<?php echo $r['event_id']; ?>][event][meta_est][<?php $key ?>]" id="emi-<?php $key ?>-<?php echo $r['event_id']; ?>" value="<?php echo $value; ?>" />
+				</span>
+			</label>
+			<div class="clear"></div>
+
+		<?php endforeach; ?>
+
+	</fieldset>
+	<fieldset class="inline-edit-center">
+
+		<?php foreach ($r['meta_rus'] as $key => $value): ?>
+
+			<label>
+				<span class="label-text"><?php _e($key, "emi"); ?> : </span>
+				<span class="input-text-wrap">
+					<input name="emi[<?php echo $r['event_id']; ?>][event][meta_est][<?php $key ?>]" id="emi-<?php $key ?>-<?php echo $r['event_id']; ?>" value="<?php echo $value; ?>" />
+				</span>
+			</label>
+			<div class="clear"></div>
+
+		<?php endforeach; ?>
 	</fieldset>
 
 	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][event][post_status]" id="emi-event_all_day-<?php echo $r['event_id']; ?>"
