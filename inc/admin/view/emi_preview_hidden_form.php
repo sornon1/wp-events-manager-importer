@@ -76,7 +76,7 @@
 			<label>
 				<span class="label-text"><?php _e($key, "emi"); ?> : </span>
 				<span class="input-text-wrap">
-					<input name="emi[<?php echo $r['event_id']; ?>][event][meta_est][<?php $key ?>]" id="emi-<?php $key ?>-<?php echo $r['event_id']; ?>" value="<?php echo $value; ?>" />
+					<input name="emi[<?php echo $r['event_id']; ?>][event][meta_rus][<?php $key ?>]" id="emi-<?php $key ?>-<?php echo $r['event_id']; ?>" value="<?php echo $value; ?>" />
 				</span>
 			</label>
 			<div class="clear"></div>
