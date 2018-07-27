@@ -199,8 +199,12 @@
 			$evs['event_spaces']        = null;
 			$evs['event_category_id']   = null;
 			$category_name = $v[18];
-			if ($params['null_string'] !== $category_name) {
-				$evs['event_category_id'] = get_cat_ID($category_name);
+			$category = get_term_by('name', $category_name, 'event-categories');
+			if (
+				$params['null_string'] !== $category_name &&
+				$category !== false
+			) {
+				$evs['event_category_id'] = (int)$category->term_id;
 			}
 			$evs['event_attributes']    = null;
 			$evs['recurrence']          = 0;
