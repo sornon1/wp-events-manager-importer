@@ -109,6 +109,12 @@
 				<textarea name="emi[<?php echo $r['event_id']; ?>][event][db_post_content]" id="emi-post_content-<?php echo $r['event_id']; ?>"><?php echo $r['post_content']; ?></textarea>
 			</span>
 		</label>
+		<label>
+			<span class="label-text"><?php _e("Category", "emi"); ?> : </span>
+			<span class="input-text-wrap">
+				<input readonly name="emi[<?php echo $r['event_id']; ?>][event][db_post_category]" id="emi-event_category_id-<?php echo $r['event_id']; ?>" value="<?php echo $r['event_category_id']; ?>" />
+			</span>
+		</label>
 	</fieldset>
 	<input type="hidden" name="emi[<?php echo $r['event_id']; ?>][event][post_status]" id="emi-event_all_day-<?php echo $r['event_id']; ?>"
 		value="<?php echo $r['post_status']; ?>"/>
