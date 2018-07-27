@@ -136,9 +136,11 @@ class EMI_Event extends EMI{
 	function save(){
 		global $wpdb;
 		//create the post
+		$slug = sanitize_title_with_dashes($this->db_event_name);
 		$post_array=array(
 			"post_type"=>EM_POST_TYPE_EVENT,
 			"post_title"=>$this->db_event_name,
+			"post_name"=>$slug,
 			"post_content"=>$this->db_post_content,
 			"post_status"=>$this->post_status
 		);
@@ -165,8 +167,10 @@ class EMI_Event extends EMI{
 		if(!$ACFMetas) {
 			return 6;
 		}
-		// update his status of the post to publish
-		$publish_post=$wpdb->update( $wpdb->posts, array( 'post_status' => $this->Post->status, 'post_name' => $this->Post->post_name ), array( 'ID' => $this->Post->ID ) );
+		// update status of the post to publish
+		$post_status = 'publish';
+		$unique_slug = wp_unique_post_slug($this->Post->post_name, $post_id, $post_status, 'event', 0);
+		$publish_post=$wpdb->update( $wpdb->posts, array( 'post_status' => $post_status, 'post_name' => $unique_slug), array( 'ID' => $this->Post->ID ) );
 		(bool)($publish_post);
 		if (!$publish_post){return 5;}
 		return 1;
