@@ -183,12 +183,12 @@
 
 			// ACF meta fields for event - ESTONIAN
 			$evs['meta_est'] = [];
-			$evs['meta_est']['asukoht'] = null;
-			$evs['meta_est']['sihtgrupp'] = $v[8];
-			$evs['meta_est']['korraldaja'] = $v[9];
-			$evs['meta_est']['korraldaja_email'] = $v[10];
-			$evs['meta_est']['urituse_info'] = $v[11];
-			$evs['meta_est']['osalemise_info'] = $v[12];
+			$evs['meta_est']['asukoht'] = $v[8];
+			$evs['meta_est']['sihtgrupp'] = $v[9];
+			$evs['meta_est']['korraldaja'] = $v[10];
+			$evs['meta_est']['korraldaja_email'] = $v[11];
+			$evs['meta_est']['urituse_info'] = $v[12];
+			$evs['meta_est']['osalemise_info'] = $v[13];
 			$evs['meta_est']['valine_link'] = $v[5];
 			
 			

@@ -24,7 +24,7 @@ As for now we only support basic import :
 Thanks to [meitar] (https://github.com/meitar)
 
 ```
-event_id,"Event Name","Event Status","Event MySQL-Formatted Start Date and Time","Event MySQL-Formatted End Date and Time","Event Web Address","Event Description","Category","Target","Organizer","Organizer e-mail","Event information","Participation information"
+event_id,"Event Name","Event Status","Event MySQL-Formatted Start Date and Time","Event MySQL-Formatted End Date and Time","Event Web Address","Event Description","Category","Address","Target","Organizer","Organizer e-mail","Event information","Participation information"
 ```
 
 Example file:
