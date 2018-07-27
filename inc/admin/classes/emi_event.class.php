@@ -143,6 +143,7 @@
 		$event_array["event_status"]=$this->get_event_status($Post->status);
 		$event_array["event_attributes"]=json_encode($this->event_attributes);
 		unset($event_array["post_category"]);
+		unset($event_array["event_id"]);
 		return $event_array;
 	}
 
